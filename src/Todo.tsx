@@ -2,11 +2,14 @@ import { useState } from "react";
 import { addTodo, getTodos } from "./api/todo";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import { setValue } from "./store/todo-slice";
 
 function Todo() {
-  const [newTodo, setNewTodo] = useState("");
   const queryClient = useQueryClient();
-
+  const value = useSelector((state: RootState) => state.todo.value);
+  const dispatch = useDispatch();
   const {
     isPending,
     error,
@@ -52,9 +55,9 @@ function Todo() {
 
       <div>
         <input
-          value={newTodo}
+          value={value}
           onChange={(e) => {
-            setNewTodo(e.target.value);
+            dispatch(setValue(e.target.value));
           }}
           className="border m-4 p-4 border-blue-500 h-10 w-96"
           type="text"
